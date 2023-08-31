@@ -2,8 +2,8 @@
 #define __CONSTANTS_H
 
 /* DISPLAYING */
-#define  DISPLAY_WIDTH   ( 640 )
-#define DISPLAY_HEIGHT   ( 480 )
+#define      WIN_WIDTH   ( 640 )
+#define     WIN_HEIGHT   ( 480 )
 #define          SCALE   ( 4   )
 #define            FPS   ( 60  )
 /* TILES */

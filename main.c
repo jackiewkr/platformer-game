@@ -9,56 +9,18 @@
  * For more info, see: https://www.mozilla.org/en-US/MPL/2.0/
  **/
 
-#include <stdio.h>
-
-#include "libs/draw.h"
-#include "libs/events.h"
-#include "libs/state.h"
-#include "libs/actor.h"
-#include "libs/tilemap.h"
+#include "libs/glfw_wrapper/glfw_wrapper.h"
+#include "libs/error-handler/error-handler.h"
 
 int main()
 {
-        /* Load test actor */
-        struct Actor* ac = ac_construct( 1, 32, 16, 32, 8, 16 );
-        struct State* gamestate = st_construct();
-        /* Load test level */
-        st_set_tm(gamestate, tm_populate( "levels/test.lvl" ), 0);
-        st_add_ac( gamestate, ac );
-        struct Window* win = win_construct();
-        struct Event* ev = ev_construct( win );
+        struct Window* win = win_init();
 
-        /* Main game loop */
-        unsigned int close = 0;
-        unsigned int redraw = 0;
-        while ( !close )
+        while ( !win_checkCloseState( win ) )
         {
-                /* Handle events */
-                switch( get_event( ev ) )
-                {
-                case EVENT_CLOSE:
-                        close++;
-                        break;
-                case EVENT_TICK:
-                        redraw++;
-                        break;
-                default: break;
-                }
-
-                /* Handle keyboard input */
-                if ( is_key_pressed( ev, KEY_LEFT ) ) st_moveLeft(gamestate);
-                if ( is_key_pressed( ev, KEY_RIGHT ) ) st_moveRight(gamestate);
-                
-                /* Handle drawign and game ticks */
-                if (redraw && is_event_queue_clear( ev ) )
-                {
-                        redraw = 0;
-                        win_draw( win, gamestate );
-                        st_tick_actors( gamestate );
-                }
+                /* Main loop */
+                win_flip( win );
         }
-
-        st_destruct( gamestate );
-        ev_destruct( ev );
-        win_destruct( win );
+        err_report( INFO, "Closing..." );
+        win_free( win );
 }
