@@ -138,3 +138,35 @@ struct Tilemap* tm_populate( char* loc )
 
         return tm;
 }
+
+/** ---- level designer ---- **/
+struct Tilemap* tm_createBlank()
+{
+        struct Tilemap* tm = tm_construct( 20, 15, 1 );
+	tm->map = malloc( sizeof(struct Tile*) * 20 * 15 );
+	for ( int i = 0; i < 20*15; i++ )
+	{
+                tm->map[i] = t_construct( 0 );
+	}
+
+	return tm;
+}
+void tm_mod_tile( struct Tilemap* tm, int type, int w, int h )
+{
+        int index = pos_to_index( w, h, tm->w );
+	tm->map[index]->tile = type;
+}
+
+void tm_export( struct Tilemap* tm, const char* loc )
+{
+        FILE* fptr = fopen( loc, "w" );
+	fprintf( fptr, "20,15,1,8\n" );
+	for ( int i = 0; i < tm->w * tm->h; i++ )
+	{
+		int x = i % tm->w;
+		int y = i / tm->w;
+		fprintf( fptr, "%i,%i,%i\n", tm->map[i]->tile, x, y );
+	}
+	fclose( fptr );
+	
+}
