@@ -3,7 +3,7 @@
 
 #include "../../constants.h"
 #include "../structures/queue.h"
-#include "../system.h"
+#include "window.h"
 #include "draw_routines.h"
 #include "imgtex.h"
 
@@ -36,16 +36,17 @@ static void _initSDL()
 static void _loadAssets( struct Window* win )
 {
         //temp; load only example tileset
-	win->assets = malloc( sizeof(struct ImgTex*) );
+	win->assets = malloc( sizeof(struct ImgTex*) * 2 );
 	win->assets[0] = imgtex_init( win->renderer,
 				      "assets/tilesets/test.json" );
-	
+        win->assets[1] = imgtex_init( win->renderer, 
+                                      "assets/tilesets/text.json" );
 }
 
 struct Window* win_init()
 {
         /* Initialize SDL */
-        _init_sdl();
+        _initSDL();
 
         /* Allocate and populate Window struct */
         struct Window* win = malloc( sizeof(struct Window) );
@@ -79,7 +80,7 @@ struct DQItem
 	ui_vec2_t pos;
 };
 
-void win_addToQueue( struct Window* win, enum itemType it, void* item,
+void win_addToQueue( struct Window* win, enum ItemType it, void* item,
 		     ui_vec2_t pos )
 {
         struct DQItem* dq_item = malloc( sizeof(struct DQItem) );
@@ -101,8 +102,11 @@ void win_drawFrame( struct Window* win )
 		switch (dq_item->it)
 		{
 		case ROOM_TYPE:
-			_draw_tilemap( win, (struct Tilemap*)dq_item->item );
+			_draw_room( win, (struct Room*)dq_item->item );
 			break;
+                case TEXT_TYPE:
+                        _draw_text( win, (struct Text*)dq_item->item );
+                        break;
                 default:
 			break;
 		}
@@ -118,12 +122,12 @@ void win_flip( struct Window* win )
 	SDL_RenderPresent( win->renderer );
 }
 
-SDL_Renderer* _win_getRenderer( struct Window* win )
+void* win_getRenderer( struct Window* win )
 {
-	return win->renderer;
+	return (void*)win->renderer;
 }
 
-struct ImgTex* _win_getAsset( struct Window* win, unsigned int index )
+struct ImgTex* win_getAsset( struct Window* win, uint8_t index )
 {
         return win->assets[index];
 }

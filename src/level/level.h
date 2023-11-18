@@ -1,11 +1,11 @@
 #ifndef LEVEL_H_
 #define LEVEL_H_
 
+#define DEV_ONLY extern
+
 #include "../system/structures/vectors.h"
 
 #include <stdint.h>
-
-#define DEV_ONLY ( extern )
 
 struct Level;
 struct Room;
@@ -18,7 +18,7 @@ struct Tile
 	uint8_t is_breakable : 1;
 };
 
-/* level_createBlank()
+/* level_createBlank() : DEV_ONLY
  * ===================
  * Creates a level struct that is blank for use with level_designer.
  *
@@ -64,6 +64,15 @@ struct Room* level_getRoom( struct Level*, uint8_t id );
  */
 struct Room** level_getConnectedRooms( struct Level*, uint8_t id );
 
+/* level_createRoom() : DEV_ONLY
+ * ==================
+ * Creates a room with the given width and height at the specified position.
+ * 
+ * Returns the ID of the room just created.
+ */
+DEV_ONLY uint8_t level_createRoom( struct Level*, 
+                                   ui_vec2_t pos, ui_vec2_t dims );
+
 /* room_getTilemap()
  * =================
  * Gets a given tilemap for the given room. The index is from 0-2 (fg,mg,bg).
@@ -71,7 +80,7 @@ struct Room** level_getConnectedRooms( struct Level*, uint8_t id );
  * Returns Tilemap struct ptr on success, NULL on error. Additional details are
  * printed to stderr. 
  */
-struct Tilemap* room_getTilemap( struct Room*, int index );
+struct Tilemap* room_getTilemap( struct Room*, uint8_t index );
 
 /* room_getID()
  * ============
@@ -104,5 +113,11 @@ ui_vec2_t room_getPos( struct Room* );
  * Returns the given Tile. Errors are printed to stderr. 
  */
 struct Tile tm_getTile( struct Tilemap*, ui_vec2_t pos );
+
+/* tm_modTile()
+ * ============
+ * Modify the tile at the given position to take the given tile type.
+ */
+DEV_ONLY void tm_modTile( struct Tilemap*, ui_vec2_t pos, uint8_t type );
 
 #endif //LEVEL_H_

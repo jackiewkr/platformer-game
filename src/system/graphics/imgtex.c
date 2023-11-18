@@ -1,5 +1,5 @@
-#include "../error-handler/error-handler.h"
-#include "../constants.h"
+#include "../system.h"
+#include "../../constants.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>

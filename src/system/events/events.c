@@ -1,6 +1,6 @@
 #include <SDL2/SDL.h>
 
-#include "events.h"
+#include "../system.h"
 
 struct Event
 {

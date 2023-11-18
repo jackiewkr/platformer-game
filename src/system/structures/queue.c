@@ -4,7 +4,7 @@
  * Simple dynamic array acting as a queue.
  **/
 
-#include "../error-handler/error-handler.h"
+#include "../system.h"
 
 #include <stdlib.h>
 #include <string.h>

@@ -1,6 +1,6 @@
 #ifndef IMGTEX_H_
-
 #define IMGTEX_H_
+
 /**
  * imgtex.h
  * ========

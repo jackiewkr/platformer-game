@@ -1,14 +1,15 @@
 CC = clang
 CFLAGS = -Wall -Werror
-INCLUDES = libs/sdl_wrapper/window.c libs/sdl_wrapper/draw_routines.c \
-           libs/data_structures/queue.c libs/error-handler/error-handler.c \
-           libs/sdl_wrapper/imgtex.c libs/tilemap.c libs/events.c
+INCLUDES = src/level/level.c src/system/graphics/window.c \
+src/system/graphics/draw_routines.c src/system/graphics/imgtex.c \
+src/system/events/error-handler.c src/system/events/events.c \
+src/system/structures/queue.c
 
 LDFLAGS = -lSDL2 -D_REENTRANT -I/usr/include/SDL2 -I/usr/include/json-c -ljson-c -lSDL2_image -g -gdwarf-4
 
-build:
-	${CC} -o main main.c ${CFLAGS} ${INCLUDES} ${LDFLAGS}
+compile:
+	${CC} -o build/main src/main.c ${CFLAGS} ${INCLUDES} ${LDFLAGS}
 
-build_level:
-	${CC} -o level-designer level-designer.c ${CFLAGS} ${INCLUDES} ${LDFLAGS}
+compile_lvl:
+	${CC} -o build/level-designer src/level-designer.c ${CFLAGS} ${INCLUDES} ${LDFLAGS}
 

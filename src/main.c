@@ -9,11 +9,7 @@
  * For more info, see: https://www.mozilla.org/en-US/MPL/2.0/
  **/
 
-#include "libs/sdl_wrapper/sdl_wrapper.h"
-#include "libs/sdl_wrapper/imgtex.h"
-#include "libs/error-handler/error-handler.h"
-#include "libs/tilemap.h"
-#include "libs/events.h"
+#include "system/system.h"
 
 unsigned int should_quit = 0;
 
