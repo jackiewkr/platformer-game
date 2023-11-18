@@ -1,7 +1,9 @@
-#include "../system.h"
+#define GRAPHICS_NS
+
+#include "window.h"
+#include "../events/error-handler.h"
 #include "../../constants.h"
 
-#include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <json-c/json.h>
 
@@ -72,7 +74,8 @@ struct ImgTex* imgtex_init( SDL_Renderer* renderer, const char* loc )
 		err_report( FATAL, "Failed to freadall() imgtex file!" );
 
 	//parse as json object and extract necessary data
-	json_object* json = json_tokener_parse( buf );
+        json_tokener* tok = json_tokener_new();
+	json_object* json = json_tokener_parse_ex( tok, buf, strlen( buf ) );
 	free( buf );
 
 	json_object* img = json_object_object_get( json, "tileset-img" );

@@ -1,7 +1,9 @@
-#include <stdlib.h>
-#include <stdint.h>
+#define STRUCTURES_NS
 
 #include "graph.h"
+
+#include <stdlib.h>
+#include <stdint.h>
 
 struct Node
 {

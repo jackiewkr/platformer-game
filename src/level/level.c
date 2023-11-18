@@ -10,16 +10,15 @@
 #include <stdint.h>
 
 #include "level.h"
-#include "../system/structures/graph.h"
 #include "../system/system.h"
 
 struct Tilemap
 {
         struct Tile* tilemap;
-        ui_vec2_t dims;
+        uint2d_t dims;
 };
 
-struct Tilemap* _tm_init( ui_vec2_t dims )
+struct Tilemap* _tm_init( uint2d_t dims )
 {
         struct Tilemap* tm = malloc( sizeof(struct Tilemap) );
         if ( tm == NULL )
@@ -48,12 +47,12 @@ static int pos_to_index( int x, int y, int w )
         return x + w * y;
 }
 
-struct Tile tm_getTile( struct Tilemap* tm, ui_vec2_t pos )
+struct Tile tm_getTile( struct Tilemap* tm, uint2d_t pos )
 {
         return tm->tilemap[ pos_to_index(pos.x, pos.y, tm->dims.x) ];
 }
 
-DEV_ONLY void tm_modTile( struct Tilemap* tm, ui_vec2_t pos, uint8_t type )
+DEV_ONLY void tm_modTile( struct Tilemap* tm, uint2d_t pos, uint8_t type )
 {
         tm->tilemap[ pos_to_index( pos.x, pos.y, tm->dims.x ) ].type = type;
 }
@@ -65,8 +64,8 @@ struct Room
         struct Tilemap* bg;
         
         uint8_t id;
-        ui_vec2_t dims;
-        ui_vec2_t pos;
+        uint2d_t dims;
+        uint2d_t pos;
 };
 
 /* _room_init()
@@ -76,7 +75,7 @@ struct Room
  * Returns a Room struct ptr on success, NULL on error. Errors are printed to
  * stderr
  */
-static struct Room* _room_init( uint8_t id, ui_vec2_t pos, ui_vec2_t dims )
+static struct Room* _room_init( uint8_t id, uint2d_t pos, uint2d_t dims )
 {
         struct Room* room = malloc( sizeof(struct Room) );
         if ( room == NULL )
@@ -112,12 +111,12 @@ uint8_t room_getID( struct Room* room )
         return room->id;
 }
 
-ui_vec2_t room_getDims( struct Room* room )
+uint2d_t room_getDims( struct Room* room )
 {
         return room->dims;
 }
 
-ui_vec2_t room_getPos( struct Room* room )
+uint2d_t room_getPos( struct Room* room )
 {
         return room->pos;
 }
@@ -173,8 +172,8 @@ void level_free( struct Level* l )
         free( l );
 }
 
-DEV_ONLY uint8_t level_createRoom( struct Level* level, ui_vec2_t pos, 
-                                   ui_vec2_t dims )
+DEV_ONLY uint8_t level_createRoom( struct Level* level, uint2d_t pos, 
+                                   uint2d_t dims )
 {
         uint8_t index = 0;
         uint8_t found_empty_idx = 0; //false

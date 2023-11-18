@@ -16,7 +16,7 @@
 
 unsigned int should_quit = 0;
 unsigned int do_place = 0;
-ui_vec2_t cursor = { 0, 0 };
+uint2d_t cursor = { 0, 0 };
 unsigned int tile_type = 0;
 
 void quit_callback( struct Event* ev )
@@ -26,7 +26,7 @@ void quit_callback( struct Event* ev )
 
 void keyup_callback( struct Event* ev )
 {
-	enum Keys key = ev_getKeycode( ev );
+	enum Keycode key = ev_getKeycode( ev );
 	switch ( key )
 	{
 	case KEY_UP:
@@ -49,7 +49,7 @@ void keyup_callback( struct Event* ev )
 		break;
 	default:
 		break;
-	}
+        }
 
 	if ( cursor.x < 0 || cursor.x > 19 )
 	{
@@ -74,8 +74,11 @@ int main()
         while ( !should_quit )
         {
                 /* Main loop */
-                ui_vec2_t pos = {0,0};
+                struct Text* text = text_init( "Hello, World!", 13 );
+                err_report( INFO, text_getMsg( text ) );
+                uint2d_t pos = {0,0};
 		win_addToQueue( win, ROOM_TYPE, lvl, pos );
+                win_addToQueue( win, TEXT_TYPE, text, pos );
 		win_drawFrame( win );
 		win_drawCursor( win, cursor );
 		win_flip( win );

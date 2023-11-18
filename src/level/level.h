@@ -71,7 +71,7 @@ struct Room** level_getConnectedRooms( struct Level*, uint8_t id );
  * Returns the ID of the room just created.
  */
 DEV_ONLY uint8_t level_createRoom( struct Level*, 
-                                   ui_vec2_t pos, ui_vec2_t dims );
+                                   uint2d_t pos, uint2d_t dims );
 
 /* room_getTilemap()
  * =================
@@ -96,7 +96,7 @@ uint8_t room_getID( struct Room* );
  *
  * Returns the given dimensions. Errors are printed to stderr.
  */
-ui_vec2_t room_getDims( struct Room* );
+uint2d_t room_getDims( struct Room* );
 
 /* room_getPos()
  * ==============
@@ -104,7 +104,7 @@ ui_vec2_t room_getDims( struct Room* );
  *
  * Returns the given position. Errors are printed to stderr.
  */
-ui_vec2_t room_getPos( struct Room* );
+uint2d_t room_getPos( struct Room* );
 
 /* tm_getTile()
  * ============
@@ -112,12 +112,12 @@ ui_vec2_t room_getPos( struct Room* );
  *
  * Returns the given Tile. Errors are printed to stderr. 
  */
-struct Tile tm_getTile( struct Tilemap*, ui_vec2_t pos );
+struct Tile tm_getTile( struct Tilemap*, uint2d_t pos );
 
 /* tm_modTile()
  * ============
  * Modify the tile at the given position to take the given tile type.
  */
-DEV_ONLY void tm_modTile( struct Tilemap*, ui_vec2_t pos, uint8_t type );
+DEV_ONLY void tm_modTile( struct Tilemap*, uint2d_t pos, uint8_t type );
 
 #endif //LEVEL_H_

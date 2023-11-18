@@ -1,5 +1,5 @@
-#ifndef DRAWQUEUE_H_
-#define DRAWQUEUE_H_
+#ifndef QUEUE_H_
+#define QUEUE_H_
 
 struct Queue;
 

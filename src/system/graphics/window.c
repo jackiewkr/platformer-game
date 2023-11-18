@@ -1,11 +1,14 @@
-#include <SDL2/SDL.h>
-#include <stdlib.h>
+#define GRAPHICS_NS
 
-#include "../../constants.h"
-#include "../structures/queue.h"
 #include "window.h"
 #include "draw_routines.h"
-#include "imgtex.h"
+#include "../events/error-handler.h"
+#include "../structures/vectors.h"
+#include "../structures/queue.h"
+#include "../../constants.h"
+
+#include <SDL2/SDL.h>
+#include <stdlib.h>
 
 struct Window
 {
@@ -21,7 +24,7 @@ struct Window
  * ==========
  * Initializes SDL with the given flags.
  */
-static void _initSDL()
+static void _initSDL( void )
 {
         if ( SDL_Init( SDL_INIT_VIDEO ) < 0 )
         {
@@ -43,7 +46,7 @@ static void _loadAssets( struct Window* win )
                                       "assets/tilesets/text.json" );
 }
 
-struct Window* win_init()
+struct Window* win_init( void )
 {
         /* Initialize SDL */
         _initSDL();
@@ -77,11 +80,11 @@ struct DQItem
 {
         void* item;
 	enum ItemType it;
-	ui_vec2_t pos;
+	uint2d_t pos;
 };
 
 void win_addToQueue( struct Window* win, enum ItemType it, void* item,
-		     ui_vec2_t pos )
+		     uint2d_t pos )
 {
         struct DQItem* dq_item = malloc( sizeof(struct DQItem) );
 	dq_item->item = item;
@@ -122,9 +125,9 @@ void win_flip( struct Window* win )
 	SDL_RenderPresent( win->renderer );
 }
 
-void* win_getRenderer( struct Window* win )
+SDL_Renderer* win_getRenderer( struct Window* win )
 {
-	return (void*)win->renderer;
+	return win->renderer;
 }
 
 struct ImgTex* win_getAsset( struct Window* win, uint8_t index )
@@ -132,7 +135,7 @@ struct ImgTex* win_getAsset( struct Window* win, uint8_t index )
         return win->assets[index];
 }
 
-void win_drawCursor( struct Window* win, ui_vec2_t pos )
+void win_drawCursor( struct Window* win, uint2d_t pos )
 {
         SDL_Rect cursor = { pos.x*TILE_SZ*SCALE, pos.y*TILE_SZ*SCALE,
 		            TILE_SZ*SCALE, TILE_SZ*SCALE };

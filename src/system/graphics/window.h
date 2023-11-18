@@ -3,13 +3,6 @@
 
 #include "../structures/vectors.h"
 
-/* window.h
- * ========
- * Header for Window struct.
- * Uses GRAPHICS_NS for 'protected' functions. If in graphics namespace, define
- * GRAPHICS_NS before including.
- */
-
 struct Window;
 
 /*
@@ -48,7 +41,7 @@ enum ItemType
  * position.
  */
 void win_addToQueue( struct Window*, enum ItemType, void* item,
-		     ui_vec2_t pos );
+		     uint2d_t pos );
 
 /*
  * win_drawFrame()
@@ -68,11 +61,27 @@ void win_flip( struct Window* );
  * Draws the cursor onto the backbuffer at a given position.
  * [level designer only]
  */
-void win_drawCursor( struct Window*, ui_vec2_t );
+void win_drawCursor( struct Window*, uint2d_t );
 
-#include "imgtex.h"
+#ifdef GRAPHICS_NS //namespace only functions
 
-void* win_getRenderer( struct Window* );
-struct ImgTex* win_getAsset( struct Window*, uint8_t index );
+        #include "imgtex.h"
+
+        #include <SDL2/SDL.h>
+        #include <stdint.h>
+
+        /* win_getRenderer()
+         * =================
+         * Gets the SDL_Renderer of the given window.
+         */
+        SDL_Renderer* win_getRenderer( struct Window* );
+
+        /* win_getAsset()
+         * ==============
+         * Gets a struct ImgTex from the asset list given an index
+         */
+        struct ImgTex* win_getAsset( struct Window*, uint8_t index );
+
+#endif
 
 #endif

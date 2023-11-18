@@ -1,9 +1,6 @@
+#define GRAPHICS_NS
 
-
-#include "../../level/level.h"
 #include "../../constants.h"
-#include "window.h"
-#include "imgtex.h"
 #include "draw_routines.h"
 
 #include <SDL2/SDL.h>
@@ -26,13 +23,13 @@ static void _draw_tile( struct Window* win, struct Tile tile,
 }
 
 static void _draw_tilemap( struct Window* win, struct Tilemap* tm, 
-                           ui_vec2_t offset, ui_vec2_t dims )
+                           uint2d_t offset, uint2d_t dims )
 {
 	for ( unsigned int x = 0; x < dims.x; x++ )
 	{
                 for ( unsigned int y = 0; y < dims.y; y++ )
 		{
-                        ui_vec2_t pos = { x, y }; 
+                        uint2d_t pos = { x, y }; 
                         _draw_tile( win, tm_getTile( tm, pos ), 
                                     x+offset.x, y+offset.y );
 		}
@@ -56,6 +53,9 @@ void _draw_text( struct Window* win, struct Text* text )
         SDL_Texture* texttex = imgtex_getTex( textset );
         for ( int i = 0; i < sizeof( message ); i++ )
         {
+                //TODO: copy over dq_item->pos
+                int x = TEXT_SZ * SCALE * i;
+                int y = 0;
                 SDL_Rect char_pos = { (int)message[i] - 32, 0 };
 		SDL_Rect screen_pos = { x* TEXT_SZ*SCALE, y * TEXT_SZ*SCALE,
 			                TEXT_SZ*SCALE, TEXT_SZ*SCALE };
