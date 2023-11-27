@@ -18,6 +18,8 @@ unsigned int should_quit = 0;
 unsigned int do_place = 0;
 uint2d_t cursor = { 0, 0 };
 unsigned int tile_type = 0;
+char prompt_buf[32] = "";
+unsigned int pbuf_sz = 0;
 
 void quit_callback( struct Event* ev )
 {
@@ -47,6 +49,38 @@ void keyup_callback( struct Event* ev )
         case KEY_TAB:
 		tile_type++;
 		break;
+        case KEY_A:
+        case KEY_B:
+        case KEY_C:
+        case KEY_D:
+        case KEY_E:
+        case KEY_F:
+        case KEY_G:
+        case KEY_H:
+        case KEY_I:
+        case KEY_J:
+        case KEY_K:
+        case KEY_L:
+        case KEY_M:
+        case KEY_N:
+        case KEY_O:
+        case KEY_P:
+        case KEY_Q:
+        case KEY_R:
+        case KEY_S:
+        case KEY_T:
+        case KEY_U:
+        case KEY_V:
+        case KEY_W:
+        case KEY_X:
+        case KEY_Y:
+        case KEY_Z:
+                err_report( INFO, "Got Here!" );
+                if ( pbuf_sz < 31 )
+                {
+                        prompt_buf[pbuf_sz++] = (char) (65 + key - 10);
+                }
+                break;
 	default:
 		break;
         }
@@ -75,7 +109,7 @@ int main()
         while ( !should_quit )
         {
                 /* Main loop */
-                struct Text* text = text_init( "Hello, World!", 13 );
+                struct Text* text = text_init( prompt_buf, pbuf_sz );
                 uint2d_t pos = {0,0};
 		win_addToQueue( win, ROOM_TYPE, lvl, pos );
                 win_addToQueue( win, TEXT_TYPE, text, pos );
