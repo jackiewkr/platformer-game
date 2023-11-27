@@ -75,7 +75,6 @@ int main()
         {
                 /* Main loop */
                 struct Text* text = text_init( "Hello, World!", 13 );
-                err_report( INFO, text_getMsg( text ) );
                 uint2d_t pos = {0,0};
 		win_addToQueue( win, ROOM_TYPE, lvl, pos );
                 win_addToQueue( win, TEXT_TYPE, text, pos );

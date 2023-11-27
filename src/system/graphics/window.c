@@ -63,7 +63,7 @@ struct Window* win_init( void )
 	_loadAssets( win );
 
         /* Create Drawqueue */
-        win->drawqueue = dq_init();
+        win->drawqueue = queue_init();
 	
         return win;
 }
@@ -72,6 +72,7 @@ void win_free( struct Window* win )
 {
         SDL_DestroyRenderer( win->renderer );
 	SDL_DestroyWindow( win->window );
+        queue_free( win->drawqueue );
         free( win );
         SDL_Quit();
 }
@@ -91,24 +92,25 @@ void win_addToQueue( struct Window* win, enum ItemType it, void* item,
 	dq_item->it = it;
 	dq_item->pos = pos;
 
-	dq_add( win->drawqueue, dq_item );
+	queue_add( win->drawqueue, dq_item );
 }
 
 void win_drawFrame( struct Window* win )
 {
 	SDL_RenderClear( win->renderer );
 	SDL_SetRenderDrawColor( win->renderer, 0, 0, 0, 255);
-        for ( unsigned int i = 0; i < dq_getSz( win->drawqueue ); i++ )
+        for ( unsigned int i = 0; i < queue_getSize( win->drawqueue ); i++ )
 	{
-		struct DQItem* dq_item = dq_get( win->drawqueue );
-
+		struct DQItem* dq_item = queue_get( win->drawqueue );
 		switch (dq_item->it)
 		{
 		case ROOM_TYPE:
 			_draw_room( win, (struct Room*)dq_item->item );
+                        err_report( INFO, "ROOM draw" );
 			break;
                 case TEXT_TYPE:
                         _draw_text( win, (struct Text*)dq_item->item );
+                        err_report( INFO, "TEXT draw" );
                         break;
                 default:
 			break;

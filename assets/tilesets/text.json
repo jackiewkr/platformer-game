@@ -3,6 +3,7 @@
     "tileset-img": "assets/font.bmp",
     "width": 95,
     "height": 1,
+    "tile-size": 8,
     "tiles": 
     [
         { "x": 0, "y": 0 },

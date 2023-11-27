@@ -1,9 +1,13 @@
 #define GRAPHICS_NS
 
 #include "../../constants.h"
+#include "../events/error-handler.h"
 #include "draw_routines.h"
 
 #include <SDL2/SDL.h>
+#include <string.h>
+
+#include <stdio.h>
 
 static void _draw_tile( struct Window* win, struct Tile tile,
 			unsigned int x, unsigned int y )
@@ -51,14 +55,16 @@ void _draw_text( struct Window* win, struct Text* text )
         char* message = text_getMsg( text );
         struct ImgTex* textset = win_getAsset( win, 1 );
         SDL_Texture* texttex = imgtex_getTex( textset );
-        for ( int i = 0; i < sizeof( message ); i++ )
+        for ( int i = 0; i < strlen( message ); i++ )
         {
                 //TODO: copy over dq_item->pos
-                int x = TEXT_SZ * SCALE * i;
+                int x = i;
                 int y = 0;
-                SDL_Rect char_pos = { (int)message[i] - 32, 0 };
-		SDL_Rect screen_pos = { x* TEXT_SZ*SCALE, y * TEXT_SZ*SCALE,
-			                TEXT_SZ*SCALE, TEXT_SZ*SCALE };
+                SDL_Rect char_pos = imgtex_getTilePos( textset, 
+                                                       (int)message[i] - 32 );
+                fprintf( stderr, "(%d,%d): %c\n", char_pos.x, char_pos.y, message[i] );
+		SDL_Rect screen_pos = { x * SCALE, y * SCALE,
+			                TEXT_SZ * SCALE, TEXT_SZ * SCALE };
 
 		SDL_RenderCopy( win_getRenderer( win ), texttex,
 				&char_pos, &screen_pos ); 

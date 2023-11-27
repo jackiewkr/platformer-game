@@ -3,6 +3,7 @@
     "tileset-img": "assets/temple-ts.bmp",
     "width": 4,
     "height": 2,
+    "tile-size": 8,
     "tiles": 
     [
         { "x": 0, "y": 0 },

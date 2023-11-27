@@ -19,8 +19,9 @@ struct Img
 struct ImgTex
 {
         SDL_Texture* tileset;
-	unsigned int width;                 //in tiles
-	unsigned int height;                //in tiles
+	int width;                 //in tiles
+	int height;                //in tiles
+        int tile_sz;
 };
 
 /* freadall()
@@ -81,11 +82,17 @@ struct ImgTex* imgtex_init( SDL_Renderer* renderer, const char* loc )
 	json_object* img = json_object_object_get( json, "tileset-img" );
 	json_object* width = json_object_object_get( json, "width" );
 	json_object* height = json_object_object_get( json, "height" );
+        json_object* size = json_object_object_get( json, "tile-size" );
 
 	imgtex->tileset = IMG_LoadTexture( renderer,
 					   json_object_get_string( img ) );
-	imgtex->width = (unsigned int)json_object_get_int( width );
-	imgtex->height = (unsigned int)json_object_get_int( height );
+	imgtex->width = json_object_get_int( width );
+	imgtex->height = json_object_get_int( height );
+        imgtex->tile_sz = json_object_get_int( size );
+
+        err_report( INFO, json_object_get_string( width ) );
+        err_report( INFO, json_object_get_string( height ) );
+        err_report( INFO, json_object_get_string( size ) );
 	
 	return imgtex;
 }
@@ -103,9 +110,10 @@ SDL_Texture* imgtex_getTex( struct ImgTex* imgtex )
 
 SDL_Rect imgtex_getTilePos( struct ImgTex* imgtex, int tile )
 {
-	unsigned int x = (tile-1) % imgtex->width;
-	unsigned int y = (tile-1) / imgtex->width;
+	int x = (tile-1) % imgtex->width;
+        int y = (tile-1) / imgtex->width;
 
-	SDL_Rect rect = { x*TILE_SZ, y*TILE_SZ, TILE_SZ, TILE_SZ };
+	SDL_Rect rect = { x * imgtex->tile_sz, y * imgtex->tile_sz, 
+                          imgtex->tile_sz, imgtex->tile_sz };
 	return rect;
 }

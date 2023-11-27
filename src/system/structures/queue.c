@@ -1,74 +1,101 @@
 /**
  * queue.c
  * ===========
- * Simple dynamic array acting as a queue.
+ * Dynamic queue implemented as a linked list.
+ * 
+ * By Jacqueline W.
  **/
-
-#define STRUCTURES_NS
 
 #include "queue.h"
 #include "../events/error-handler.h"
 
 #include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+
+struct Node
+{
+        struct Node* next;
+        void* item;
+};
 
 struct Queue
 {
-        void** queue;
-	unsigned int sz;
+        struct Node* head;
+        unsigned int size;
 };
 
-static void dq_print( struct Queue* q )
+struct Queue* queue_init( void )
 {
-        for ( int i = 0; i < q->sz; i++ )
+        struct Queue* q = malloc( sizeof(struct Queue) );
+        if ( q == NULL )
         {
-                printf( "%s\n", (char*)q->queue[i] );
+                err_report( FATAL, "Queue failed to malloc()!" );
         }
-        printf( "===\n" );
+
+        q->head = NULL;
+        q->size = 0;
+
+        return q;
 }
 
-struct Queue* dq_init( void )
+void queue_free( struct Queue* q )
 {
-	struct Queue* dq = malloc( sizeof(struct Queue) );
-	if ( dq == NULL )
-		err_report( FATAL, "Queue failed to malloc()!" );
+        if ( q != NULL )
+        {
+                //traverse thru list and free each node from head to tail
+                struct Node* next_node = q->head;
+                while ( next_node != NULL )
+                {
+                        struct Node* curr_node = next_node;
+                        next_node = curr_node->next;
 
-	dq->sz = 0;
-	dq->queue = NULL;
+                        free( curr_node );
+                }
 
-	return dq;
+                free( q );
+        }
 }
 
-void dq_free( struct Queue* dq )
+void queue_add( struct Queue* q, void* item )
 {
-        if ( dq->queue != NULL )
-		free(dq->queue );
+        if ( q->head == NULL )
+        {
+                q->head = malloc( sizeof(struct Node) );
+                q->head->next = NULL;
+                q->head->item = item;
+        } else
+        {
+                //traverse to end element
+                struct Node* next_node = q->head;
+                while ( next_node->next != NULL )
+                {
+                        next_node = next_node->next;
+                }
 
-	free( dq );
+                next_node->next = malloc( sizeof(struct Node) );
+                next_node->next->next = NULL;
+                next_node->next->item = item;
+        }
+
+        q->size++;
 }
 
-void dq_add( struct Queue* dq, void* item )
+void* queue_get( struct Queue* q )
 {
-        dq->queue = realloc( dq->queue, sizeof(void*) * ( ++dq->sz ) );
-	if ( dq->queue == NULL )
-		err_report( FATAL, "Queue failed to realloc()!" );
-        	
-	dq->queue[dq->sz - 1] = item;
+        struct Node* head = q->head;
+        if ( head != NULL )
+        {
+                q->head = head->next;
+                q->size--;
+
+                void* retval = head->item;
+
+                free( head );
+                return retval;
+        }
+        return head; //returns NULL
 }
 
-void* dq_get( struct Queue* dq )
+unsigned int queue_getSize( struct Queue* q )
 {
-        dq_print( dq );
-        void* item = dq->queue[0];
-
-	memmove( dq->queue[0], dq->queue[1], sizeof(void*) * ( dq->sz - 1 ) );
-        dq->sz--;
-        dq_print( dq );
-	return item;
-}
-
-unsigned int dq_getSz( struct Queue* dq )
-{
-        return dq->sz;
+        return q->size;
 }
