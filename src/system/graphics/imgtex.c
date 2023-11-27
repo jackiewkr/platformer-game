@@ -83,18 +83,21 @@ struct ImgTex* imgtex_init( SDL_Renderer* renderer, const char* loc )
 	json_object* width = json_object_object_get( json, "width" );
 	json_object* height = json_object_object_get( json, "height" );
         json_object* size = json_object_object_get( json, "tile-size" );
-
-	imgtex->tileset = IMG_LoadTexture( renderer,
-					   json_object_get_string( img ) );
-	imgtex->width = json_object_get_int( width );
+	
+        imgtex->width = json_object_get_int( width );
 	imgtex->height = json_object_get_int( height );
         imgtex->tile_sz = json_object_get_int( size );
-
-        err_report( INFO, json_object_get_string( width ) );
-        err_report( INFO, json_object_get_string( height ) );
-        err_report( INFO, json_object_get_string( size ) );
+        
+        //key background magenta to transparent and load to tex
+	SDL_Surface* raw_tileset = IMG_Load( json_object_get_string( img ) );
+        
+        uint32_t rgb_key = SDL_MapRGB( raw_tileset->format, 255, 0, 255 );
+        SDL_SetColorKey( raw_tileset, SDL_TRUE, rgb_key );
 	
-	return imgtex;
+        imgtex->tileset = SDL_CreateTextureFromSurface( renderer, raw_tileset );
+        SDL_FreeSurface( raw_tileset );
+
+        return imgtex;
 }
 
 void imgtex_free( struct ImgTex* imgtex )

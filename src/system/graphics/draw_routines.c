@@ -7,8 +7,6 @@
 #include <SDL2/SDL.h>
 #include <string.h>
 
-#include <stdio.h>
-
 static void _draw_tile( struct Window* win, struct Tile tile,
 			unsigned int x, unsigned int y )
 {
@@ -61,9 +59,9 @@ void _draw_text( struct Window* win, struct Text* text )
                 int x = i;
                 int y = 0;
                 SDL_Rect char_pos = imgtex_getTilePos( textset, 
-                                                       (int)message[i] - 32 );
-                fprintf( stderr, "(%d,%d): %c\n", char_pos.x, char_pos.y, message[i] );
-		SDL_Rect screen_pos = { x * SCALE, y * SCALE,
+                                                       (int)message[i] - 31 );
+                
+		SDL_Rect screen_pos = { x * SCALE * TEXT_SZ, y * SCALE * TEXT_SZ,
 			                TEXT_SZ * SCALE, TEXT_SZ * SCALE };
 
 		SDL_RenderCopy( win_getRenderer( win ), texttex,

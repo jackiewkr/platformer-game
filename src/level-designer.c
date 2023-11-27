@@ -66,6 +66,7 @@ void keyup_callback( struct Event* ev )
 int main()
 {
         struct Window* win = win_init();
+        
 	struct Level* lvl = level_createBlank();
 
         ev_setCallback( quit_callback, QUIT );

@@ -106,11 +106,9 @@ void win_drawFrame( struct Window* win )
 		{
 		case ROOM_TYPE:
 			_draw_room( win, (struct Room*)dq_item->item );
-                        err_report( INFO, "ROOM draw" );
 			break;
                 case TEXT_TYPE:
                         _draw_text( win, (struct Text*)dq_item->item );
-                        err_report( INFO, "TEXT draw" );
                         break;
                 default:
 			break;
