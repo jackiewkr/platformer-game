@@ -6,12 +6,13 @@
         //these includes are also took by window.c FIXME
         #include "../../level/level.h" //for room definition
         #include "../structures/text.h" //for text definition
+        #include "../structures/vectors.h"
         #include "window.h"
 
 
         void _draw_room( struct Window*, struct Room* );
 
-        void _draw_text( struct Window*, struct Text* );
+        void _draw_text( struct Window*, struct Text*, uint2d_t pos );
 
 #endif
 

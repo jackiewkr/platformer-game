@@ -108,7 +108,8 @@ void win_drawFrame( struct Window* win )
 			_draw_room( win, (struct Room*)dq_item->item );
 			break;
                 case TEXT_TYPE:
-                        _draw_text( win, (struct Text*)dq_item->item );
+                        _draw_text( win, (struct Text*)dq_item->item, 
+                                    dq_item->pos );
                         break;
                 default:
 			break;

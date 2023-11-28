@@ -48,16 +48,26 @@ void _draw_room( struct Window* win, struct Room* room )
         }
 }
 
-void _draw_text( struct Window* win, struct Text* text )
+void _draw_text( struct Window* win, struct Text* text, uint2d_t offset )
 {
         char* message = text_getMsg( text );
         struct ImgTex* textset = win_getAsset( win, 1 );
         SDL_Texture* texttex = imgtex_getTex( textset );
+
+        int linebreak_i = 0; //the i at which a linebreak occured
+        int y_linebreak = 0; //offset based off linebreak
         for ( int i = 0; i < strlen( message ); i++ )
         {
-                //TODO: copy over dq_item->pos
-                int x = i;
-                int y = 0;
+                int x = i + offset.x - linebreak_i;
+                int y = offset.y + y_linebreak;
+
+                if ( x >= ( WIN_WIDTH / SCALE / TEXT_SZ ) )
+                {
+                        x = 0;
+                        linebreak_i = i;
+                        y_linebreak++;
+                        y++;
+                }
                 SDL_Rect char_pos = imgtex_getTilePos( textset, 
                                                        (int)message[i] - 31 );
                 
