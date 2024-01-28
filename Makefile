@@ -1,7 +1,7 @@
 CC         := clang
 CFLAGS     := -Wall -Werror
 DEBUGFLAGS := -g -gdwarf-4
-TESTFLAGS  += src/tests/unity/unity.c
+override TESTFLAGS  += src/tests/unity/unity.c
 INCLUDES   := src/window/*.c
 
 LDFLAGS    := -lSDL2 -D_REENTRANT -I/usr/include/SDL2 -lSDL2_image

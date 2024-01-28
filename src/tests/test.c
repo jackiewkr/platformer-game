@@ -14,11 +14,9 @@
 #include "../window/window.h"
 #endif
 
-void setUp( void )
-{}
+void setUp( void ){}
 
-void tearDown( void )
-{}
+void tearDown( void ){}
 
 /**
  * \def TEST_WINDOW
@@ -46,8 +44,8 @@ void test_windowClose( void )
 {
         struct Window* w = window_init();
 
-        TEST_ASSERT_EQUAL_INT( 0, window_free( w ) );
-        TEST_ASSERT_EQUAL_INT( -1, window_free( NULL ) );
+        TEST_ASSERT_EQUAL_INT( 1, window_free( w ) );
+        TEST_ASSERT_EQUAL_INT( 0, window_free( NULL ) );
 }
 #endif
 
@@ -61,8 +59,8 @@ int main( void )
 {
         UNITY_BEGIN();
 #ifdef TEST_WINDOW
-        RUN_TEST( test_windowOpen() );
-        RUN_TEST( test_windowClose() );
+        RUN_TEST( test_windowOpen );
+        RUN_TEST( test_windowClose );
 #endif
         return UNITY_END();
 }

@@ -42,12 +42,13 @@ struct Window* window_init( void )
 uint8_t window_free( struct Window* win )
 {
         // destroy sdl stuff and q
-        SDL_DestroyRenderer( win->rend );
-        SDL_DestroyWindow( win->win );
-
         if ( win != NULL )
-                free( win );
+        {
+                SDL_DestroyRenderer( win->rend );
+                SDL_DestroyWindow( win->win );
 
+                free( win );
+        }
         return ( win != NULL );
 }
 
